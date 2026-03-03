@@ -1,0 +1,28 @@
+# Node
+node_modules/
+dist/
+.npmrc
+
+# Vite / TS
+*.tsbuildinfo
+
+# Tauri / Rust
+src-tauri/target/
+src-tauri/target-debug/
+src-tauri/target-release/
+src-tauri/tauri.conf.json.bk
+
+# Logs
+*.log
+errors.log
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Env
+.env
+.env.local
+.env.*.local
