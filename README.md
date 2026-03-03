@@ -1,5 +1,7 @@
 # FFmpeg Studio (Tauri + React)
 
+FFmpeg Studio is a cross‑platform desktop app built with Tauri (Rust) and React that wraps FFmpeg into a clean, modern GUI. It’s designed for real production work: video conversion, image processing, dataset extraction, and media inspection — all with job queues, progress tracking, and deterministic outputs.
+
 A production-ready desktop template that wraps FFmpeg with a modern GUI. Built with Tauri (Rust) and React (Vite) for cross-platform distribution.
 
 ## Features
@@ -16,16 +18,26 @@ A production-ready desktop template that wraps FFmpeg with a modern GUI. Built w
 
 ## Prerequisites
 
-- Node.js (LTS)
-- Rust toolchain (`rustup`)
+## System Requirements
+
+- Node.js 20+ (LTS recommended)
+- Rust toolchain (stable, via `rustup`)
 - System FFmpeg available on PATH (`ffmpeg` and `ffprobe`)
+- OS: macOS, Windows, or Linux (desktop)
 
 ## Setup
 
 ```bash
 npm install
+```
+
+## Dev Mode
+
+```bash
 npx tauri dev
 ```
+
+This launches the Vite dev server and the Tauri shell with live reload.
 
 Build native installers:
 
