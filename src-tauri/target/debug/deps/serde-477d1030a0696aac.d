@@ -1,0 +1,14 @@
+/Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/deps/serde-477d1030a0696aac.d: /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/build/serde-313b916f980ad045/out/private.rs
+
+/Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/deps/libserde-477d1030a0696aac.rlib: /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/build/serde-313b916f980ad045/out/private.rs
+
+/Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/deps/libserde-477d1030a0696aac.rmeta: /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/build/serde-313b916f980ad045/out/private.rs
+
+/Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/Users/smanna/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/build/serde-313b916f980ad045/out/private.rs:
+
+# env-dep:OUT_DIR=/Users/smanna/Documents/Ideas/MediaConverter/src-tauri/target/debug/build/serde-313b916f980ad045/out

@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  background: radial-gradient(1200px 800px at 15% 10%, rgba(125, 211, 252, 0.18), transparent 60%),
+    radial-gradient(900px 600px at 85% 0%, rgba(70, 227, 183, 0.18), transparent 60%),
+    #0b0f14;
+  color: #f8fafc;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-shell {
+  background: linear-gradient(180deg, rgba(17, 23, 35, 0.92), rgba(11, 15, 20, 0.98));
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  box-shadow: 0 20px 60px rgba(8, 12, 18, 0.45);
+  border-radius: 20px;
+}
+
+.glass-card {
+  background: rgba(17, 23, 35, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 0 30px rgba(13, 17, 25, 0.35);
+}
+
+.section-title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-mint px-4 py-2 text-ink font-semibold transition hover:brightness-110;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-600/40 px-4 py-2 text-slate-100 transition hover:border-mint/60 hover:text-mint;
+}
+
+.input {
+  @apply w-full rounded-lg border border-slate-700/60 bg-ink/60 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-mint/80 focus:outline-none;
+}
+
+.select {
+  @apply w-full rounded-lg border border-slate-700/60 bg-ink/60 px-3 py-2 text-sm text-slate-100 focus:border-mint/80 focus:outline-none;
+}
+
+.badge {
+  @apply inline-flex items-center rounded-full border border-slate-700/60 px-3 py-1 text-xs text-slate-200;
+}
+
+.progress-track {
+  @apply h-2 w-full overflow-hidden rounded-full bg-slate-800/70;
+}
+
+.progress-bar {
+  @apply h-full rounded-full bg-gradient-to-r from-sky to-mint;
+}
+
+.code-block {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  background: rgba(10, 14, 20, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 12px;
+  padding: 12px;
+  color: #d1d5db;
+  white-space: pre-wrap;
+}

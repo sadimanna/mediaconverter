@@ -1,0 +1,196 @@
+{
+  "video_presets": [
+    {
+      "id": "mp4_h264_aac_fast",
+      "label": "MP4 H.264 + AAC (Fast)",
+      "formats": ["mp4"],
+      "args": ["-c:v", "libx264", "-preset", "ultrafast", "-crf", "28", "-c:a", "aac", "-b:a", "128k"]
+    },
+    {
+      "id": "mp4_h264_aac_hq",
+      "label": "MP4 H.264 + AAC (High Quality)",
+      "formats": ["mp4"],
+      "args": ["-c:v", "libx264", "-preset", "slow", "-crf", "18", "-c:a", "aac", "-b:a", "192k"]
+    },
+    {
+      "id": "mp4_h265_aac",
+      "label": "MP4 H.265 + AAC",
+      "formats": ["mp4"],
+      "args": ["-c:v", "libx265", "-preset", "medium", "-crf", "22", "-c:a", "aac", "-b:a", "192k"]
+    },
+    {
+      "id": "mp4_av1_aac",
+      "label": "MP4 AV1 + AAC",
+      "formats": ["mp4"],
+      "args": ["-c:v", "libsvtav1", "-preset", "8", "-crf", "32", "-c:a", "aac", "-b:a", "128k"]
+    },
+    {
+      "id": "mp4_mpeg4_mp3",
+      "label": "MP4 MPEG-4 Part 2 + MP3",
+      "formats": ["mp4"],
+      "args": ["-c:v", "mpeg4", "-q:v", "4", "-c:a", "libmp3lame", "-q:a", "4"]
+    },
+    {
+      "id": "mp4_h264_alac",
+      "label": "MP4 H.264 + ALAC",
+      "formats": ["mp4"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "alac"]
+    },
+    {
+      "id": "mp4_h264_ac3",
+      "label": "MP4 H.264 + AC-3",
+      "formats": ["mp4"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "ac3", "-b:a", "384k"]
+    },
+
+    {
+      "id": "mkv_h264_aac",
+      "label": "MKV H.264 + AAC",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "aac", "-b:a", "192k"]
+    },
+    {
+      "id": "mkv_h265_aac",
+      "label": "MKV H.265 + AAC",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libx265", "-preset", "medium", "-crf", "22", "-c:a", "aac", "-b:a", "192k"]
+    },
+    {
+      "id": "mkv_av1_opus",
+      "label": "MKV AV1 + Opus",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libsvtav1", "-preset", "8", "-crf", "32", "-c:a", "libopus", "-b:a", "128k"]
+    },
+    {
+      "id": "mkv_vp8_vorbis",
+      "label": "MKV VP8 + Vorbis",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libvpx", "-b:v", "0", "-crf", "30", "-c:a", "libvorbis", "-b:a", "128k"]
+    },
+    {
+      "id": "mkv_vp9_opus",
+      "label": "MKV VP9 + Opus",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "30", "-c:a", "libopus", "-b:a", "128k"]
+    },
+    {
+      "id": "mkv_mpeg2_mp3",
+      "label": "MKV MPEG-2 + MP3",
+      "formats": ["mkv"],
+      "args": ["-c:v", "mpeg2video", "-q:v", "4", "-c:a", "libmp3lame", "-q:a", "4"]
+    },
+    {
+      "id": "mkv_h264_flac",
+      "label": "MKV H.264 + FLAC",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "flac"]
+    },
+    {
+      "id": "mkv_h264_ac3",
+      "label": "MKV H.264 + AC-3",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "ac3", "-b:a", "384k"]
+    },
+    {
+      "id": "mkv_h264_dts",
+      "label": "MKV H.264 + DTS",
+      "formats": ["mkv"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "dts", "-b:a", "768k"]
+    },
+
+    {
+      "id": "webm_vp8_vorbis",
+      "label": "WebM VP8 + Vorbis",
+      "formats": ["webm"],
+      "args": ["-c:v", "libvpx", "-b:v", "0", "-crf", "32", "-c:a", "libvorbis", "-b:a", "128k"]
+    },
+    {
+      "id": "webm_vp9_opus",
+      "label": "WebM VP9 + Opus",
+      "formats": ["webm"],
+      "args": ["-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "30", "-c:a", "libopus", "-b:a", "128k"]
+    },
+    {
+      "id": "webm_av1_opus",
+      "label": "WebM AV1 + Opus",
+      "formats": ["webm"],
+      "args": ["-c:v", "libaom-av1", "-crf", "32", "-b:v", "0", "-c:a", "libopus", "-b:a", "128k"]
+    },
+
+    {
+      "id": "avi_mpeg4_mp3",
+      "label": "AVI MPEG-4 Part 2 + MP3",
+      "formats": ["avi"],
+      "args": ["-c:v", "mpeg4", "-q:v", "4", "-c:a", "libmp3lame", "-q:a", "4"]
+    },
+    {
+      "id": "avi_mjpeg_pcm",
+      "label": "AVI MJPEG + PCM",
+      "formats": ["avi"],
+      "args": ["-c:v", "mjpeg", "-q:v", "3", "-c:a", "pcm_s16le"]
+    },
+    {
+      "id": "avi_h264_mp3",
+      "label": "AVI H.264 + MP3",
+      "formats": ["avi"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "22", "-c:a", "libmp3lame", "-q:a", "4"]
+    },
+
+    {
+      "id": "mov_h264_aac",
+      "label": "MOV H.264 + AAC",
+      "formats": ["mov"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "aac", "-b:a", "192k"]
+    },
+    {
+      "id": "mov_h265_aac",
+      "label": "MOV H.265 + AAC",
+      "formats": ["mov"],
+      "args": ["-c:v", "libx265", "-preset", "medium", "-crf", "22", "-c:a", "aac", "-b:a", "192k"]
+    },
+    {
+      "id": "mov_prores_pcm",
+      "label": "MOV ProRes + PCM",
+      "formats": ["mov"],
+      "args": ["-c:v", "prores_ks", "-profile:v", "3", "-c:a", "pcm_s16le"]
+    },
+    {
+      "id": "mov_dnxhd_pcm",
+      "label": "MOV DNxHD + PCM",
+      "formats": ["mov"],
+      "args": ["-c:v", "dnxhd", "-b:v", "185M", "-c:a", "pcm_s16le"]
+    },
+    {
+      "id": "mov_h264_alac",
+      "label": "MOV H.264 + ALAC",
+      "formats": ["mov"],
+      "args": ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-c:a", "alac"]
+    }
+  ],
+  "audio_extract": [
+    {
+      "id": "mp3",
+      "label": "MP3",
+      "ext": "mp3",
+      "args": ["-vn", "-c:a", "libmp3lame", "-q:a", "2"]
+    },
+    {
+      "id": "wav",
+      "label": "WAV (PCM S16)",
+      "ext": "wav",
+      "args": ["-vn", "-c:a", "pcm_s16le"]
+    },
+    {
+      "id": "aac",
+      "label": "AAC",
+      "ext": "m4a",
+      "args": ["-vn", "-c:a", "aac", "-b:a", "192k"]
+    },
+    {
+      "id": "flac",
+      "label": "FLAC",
+      "ext": "flac",
+      "args": ["-vn", "-c:a", "flac"]
+    }
+  ]
+}
