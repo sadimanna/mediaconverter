@@ -161,6 +161,10 @@ This template does **not** statically link FFmpeg. Your target system must have 
 
 To customize icons for installers, add icons and update `src-tauri/tauri.conf.json` `bundle.icon`.
 
+## Release Disclaimer
+
+macOS and Windows release binaries are built **without code-signing or notarization** by default. Some systems may block or warn when launching these installers. You can still run the app locally in dev mode from the terminal using `npx tauri dev`.
+
 ## Security Notes
 
 - Tauri allowlist is limited to `dialog` APIs in `src-tauri/tauri.conf.json`.
