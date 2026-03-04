@@ -19,7 +19,11 @@
       "active": true,
       "targets": "all",
       "identifier": "com.example.ffmpegstudio",
-      "icon": []
+      "icon": [
+        "icons/icon.png",
+        "icons/icon.ico",
+        "icons/icon.icns"
+      ]
     },
     "windows": [
       {
