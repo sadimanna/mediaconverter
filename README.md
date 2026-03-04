@@ -4,6 +4,14 @@ FFmpeg Studio is a cross‑platform desktop app built with Tauri (Rust) and Reac
 
 A production-ready desktop template that wraps FFmpeg with a modern GUI. Built with Tauri (Rust) and React (Vite) for cross-platform distribution.
 
+## Screenshots
+
+![Video Tools](assets/demo_video.png)
+![Image Tools](assets/demo_image.png)
+![Dataset Extraction](assets/demo_dataext.png)
+![Standardization](assets/demo_std.png)
+![Inspector](assets/demo_insp.png)
+
 ## Features
 
 - Video: convert formats, remux, trim, extract audio, merge external audio
@@ -25,6 +33,36 @@ A production-ready desktop template that wraps FFmpeg with a modern GUI. Built w
 - System FFmpeg available on PATH (`ffmpeg` and `ffprobe`)
 - OS: macOS, Windows, or Linux (desktop)
 
+## Install Node.js (npm)
+
+### macOS
+
+```bash
+brew install node
+node -v
+npm -v
+```
+
+### Windows (PowerShell)
+
+```powershell
+winget install OpenJS.NodeJS.LTS
+node -v
+npm -v
+```
+
+### Linux (nvm)
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+source "$NVM_DIR/nvm.sh"
+nvm install 20
+nvm use 20
+node -v
+npm -v
+```
+
 ## Setup
 
 ```bash
@@ -38,6 +76,32 @@ npx tauri dev
 ```
 
 This launches the Vite dev server and the Tauri shell with live reload.
+
+## Run From Terminal
+
+### macOS (Terminal)
+
+```bash
+cd /path/to/MediaConverter
+npm install
+npx tauri dev
+```
+
+### Windows (PowerShell)
+
+```powershell
+cd C:\path\to\MediaConverter
+npm install
+npx tauri dev
+```
+
+### Linux (Terminal)
+
+```bash
+cd /path/to/MediaConverter
+npm install
+npx tauri dev
+```
 
 Build native installers:
 
