@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Documentation
+    url: https://github.com/sadimanna/mediaconverter#readme
+    about: Please check the documentation before opening an issue.
+
+  - name: Questions / Discussions
+    url: https://github.com/sadimanna/mediaconverter/discussions
+    about: Ask questions and discuss ideas here.
+
+  - name: Feature Ideas
+    url: https://github.com/sadimanna/mediaconverter/issues
+    about: Suggest improvements or new features for the project.
