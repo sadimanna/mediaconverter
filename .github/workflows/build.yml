@@ -44,11 +44,38 @@ jobs:
             librsvg2-dev \
             patchelf
 
+      - name: Prefetch WiX Toolset (Windows)
+        # The Tauri bundler downloads WiX from GitHub in a single attempt, which
+        # often times out (HTTP 504). Fetch it with retries into the folder the
+        # bundler checks first, so the MSI step finds it already in place.
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $dest = Join-Path $env:LOCALAPPDATA "tauri\WixTools314"
+          $zip = Join-Path $env:RUNNER_TEMP "wix314-binaries.zip"
+          New-Item -ItemType Directory -Force $dest | Out-Null
+          curl.exe -fsSL --retry 5 --retry-all-errors --retry-delay 15 -o $zip `
+            https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash
+          if ($hash -ne "6ac824e1642d6f7277d0ed7ea09411a508f6116ba6fae0aa5f2c7daa2ff43d31") {
+            throw "WiX download hash mismatch: $hash"
+          }
+          Expand-Archive $zip -DestinationPath $dest -Force
+
       - name: Install Dependencies
         run: npm ci
 
       - name: Build Tauri App
-        run: npm run tauri build
+        # Retry so a transient download failure while bundling (e.g. NSIS) does
+        # not fail the job; Cargo output is reused, so retries only re-bundle.
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            npm run tauri build && exit 0
+            echo "tauri build failed (attempt $attempt), retrying in 30s"
+            sleep 30
+          done
+          exit 1
 
       - name: Upload Bundles
         uses: actions/upload-artifact@v4
@@ -87,6 +114,24 @@ jobs:
             libayatana-appindicator3-dev \
             librsvg2-dev \
             patchelf
+
+      - name: Prefetch WiX Toolset (Windows)
+        # The Tauri bundler downloads WiX from GitHub in a single attempt, which
+        # often times out (HTTP 504). Fetch it with retries into the folder the
+        # bundler checks first, so the MSI step finds it already in place.
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $dest = Join-Path $env:LOCALAPPDATA "tauri\WixTools314"
+          $zip = Join-Path $env:RUNNER_TEMP "wix314-binaries.zip"
+          New-Item -ItemType Directory -Force $dest | Out-Null
+          curl.exe -fsSL --retry 5 --retry-all-errors --retry-delay 15 -o $zip `
+            https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash
+          if ($hash -ne "6ac824e1642d6f7277d0ed7ea09411a508f6116ba6fae0aa5f2c7daa2ff43d31") {
+            throw "WiX download hash mismatch: $hash"
+          }
+          Expand-Archive $zip -DestinationPath $dest -Force
 
       - name: Install Dependencies
         run: npm ci
