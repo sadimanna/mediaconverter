@@ -54,7 +54,7 @@ jobs:
         run: |
           # Tauri downloads WiX from GitHub releases at bundle time, which has been
           # failing with 5xx errors. Put it where Tauri looks so it skips the download.
-          $dest = Join-Path $env:LOCALAPPDATA 'tauri\WixTools'
+          $dest = Join-Path $env:LOCALAPPDATA 'tauri\WixTools314'
           if (Test-Path $dest) { exit 0 }
           $zip = Join-Path $env:RUNNER_TEMP 'wix.zip'
           $ok = $false
@@ -135,7 +135,7 @@ jobs:
         run: |
           # Tauri downloads WiX from GitHub releases at bundle time, which has been
           # failing with 5xx errors. Put it where Tauri looks so it skips the download.
-          $dest = Join-Path $env:LOCALAPPDATA 'tauri\WixTools'
+          $dest = Join-Path $env:LOCALAPPDATA 'tauri\WixTools314'
           if (Test-Path $dest) { exit 0 }
           $zip = Join-Path $env:RUNNER_TEMP 'wix.zip'
           $ok = $false
