@@ -44,35 +44,44 @@ jobs:
             librsvg2-dev \
             patchelf
 
-      - name: Prefetch WiX Toolset (Windows)
-        # The Tauri bundler downloads WiX from GitHub in a single attempt, which
-        # often times out (HTTP 504). Fetch it with retries into the folder the
-        # bundler checks first, so the MSI step finds it already in place.
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          $dest = Join-Path $env:LOCALAPPDATA "tauri\WixTools314"
-          $zip = Join-Path $env:RUNNER_TEMP "wix314-binaries.zip"
-          New-Item -ItemType Directory -Force $dest | Out-Null
-          curl.exe -fsSL --retry 5 --retry-all-errors --retry-delay 15 -o $zip `
-            https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip
-          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash
-          if ($hash -ne "6ac824e1642d6f7277d0ed7ea09411a508f6116ba6fae0aa5f2c7daa2ff43d31") {
-            throw "WiX download hash mismatch: $hash"
-          }
-          Expand-Archive $zip -DestinationPath $dest -Force
-
       - name: Install Dependencies
         run: npm ci
 
+      - name: Prefetch WiX (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # Tauri downloads WiX from GitHub releases at bundle time, which has been
+          # failing with 5xx errors. Put it where Tauri looks so it skips the download.
+          $dest = Join-Path $env:LOCALAPPDATA 'tauri\WixTools314'
+          if (Test-Path $dest) { exit 0 }
+          $zip = Join-Path $env:RUNNER_TEMP 'wix.zip'
+          $ok = $false
+          foreach ($i in 1..5) {
+            try {
+              Invoke-WebRequest 'https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip' -OutFile $zip
+              $ok = $true; break
+            } catch { Write-Host "GitHub download failed (attempt $i): $_"; Start-Sleep -Seconds 20 }
+          }
+          if ($ok) {
+            Expand-Archive $zip -DestinationPath $dest
+          } else {
+            Write-Host 'Falling back to the WiX 3.14.1 package on nuget.org'
+            $pkg = Join-Path $env:RUNNER_TEMP 'wix-nuget.zip'
+            Invoke-WebRequest 'https://api.nuget.org/v3-flatcontainer/wix/3.14.1/wix.3.14.1.nupkg' -OutFile $pkg
+            Expand-Archive $pkg -DestinationPath (Join-Path $env:RUNNER_TEMP 'wix-nuget')
+            New-Item -ItemType Directory -Force $dest | Out-Null
+            Copy-Item (Join-Path $env:RUNNER_TEMP 'wix-nuget\tools\*') $dest -Recurse
+          }
+          if (-not (Test-Path (Join-Path $dest 'candle.exe'))) { throw 'WiX prefetch did not produce candle.exe' }
+
       - name: Build Tauri App
-        # Retry so a transient download failure while bundling (e.g. NSIS) does
-        # not fail the job; Cargo output is reused, so retries only re-bundle.
         shell: bash
         run: |
+          # Retry: bundling downloads NSIS tools from GitHub, which can return 5xx.
           for attempt in 1 2 3; do
             npm run tauri build && exit 0
-            echo "tauri build failed (attempt $attempt), retrying in 30s"
+            echo "Build attempt $attempt failed; retrying in 30s"
             sleep 30
           done
           exit 1
@@ -115,26 +124,36 @@ jobs:
             librsvg2-dev \
             patchelf
 
-      - name: Prefetch WiX Toolset (Windows)
-        # The Tauri bundler downloads WiX from GitHub in a single attempt, which
-        # often times out (HTTP 504). Fetch it with retries into the folder the
-        # bundler checks first, so the MSI step finds it already in place.
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Prefetch WiX (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $dest = Join-Path $env:LOCALAPPDATA "tauri\WixTools314"
-          $zip = Join-Path $env:RUNNER_TEMP "wix314-binaries.zip"
-          New-Item -ItemType Directory -Force $dest | Out-Null
-          curl.exe -fsSL --retry 5 --retry-all-errors --retry-delay 15 -o $zip `
-            https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip
-          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash
-          if ($hash -ne "6ac824e1642d6f7277d0ed7ea09411a508f6116ba6fae0aa5f2c7daa2ff43d31") {
-            throw "WiX download hash mismatch: $hash"
+          # Tauri downloads WiX from GitHub releases at bundle time, which has been
+          # failing with 5xx errors. Put it where Tauri looks so it skips the download.
+          $dest = Join-Path $env:LOCALAPPDATA 'tauri\WixTools314'
+          if (Test-Path $dest) { exit 0 }
+          $zip = Join-Path $env:RUNNER_TEMP 'wix.zip'
+          $ok = $false
+          foreach ($i in 1..5) {
+            try {
+              Invoke-WebRequest 'https://github.com/wixtoolset/wix3/releases/download/wix3141rtm/wix314-binaries.zip' -OutFile $zip
+              $ok = $true; break
+            } catch { Write-Host "GitHub download failed (attempt $i): $_"; Start-Sleep -Seconds 20 }
           }
-          Expand-Archive $zip -DestinationPath $dest -Force
-
-      - name: Install Dependencies
-        run: npm ci
+          if ($ok) {
+            Expand-Archive $zip -DestinationPath $dest
+          } else {
+            Write-Host 'Falling back to the WiX 3.14.1 package on nuget.org'
+            $pkg = Join-Path $env:RUNNER_TEMP 'wix-nuget.zip'
+            Invoke-WebRequest 'https://api.nuget.org/v3-flatcontainer/wix/3.14.1/wix.3.14.1.nupkg' -OutFile $pkg
+            Expand-Archive $pkg -DestinationPath (Join-Path $env:RUNNER_TEMP 'wix-nuget')
+            New-Item -ItemType Directory -Force $dest | Out-Null
+            Copy-Item (Join-Path $env:RUNNER_TEMP 'wix-nuget\tools\*') $dest -Recurse
+          }
+          if (-not (Test-Path (Join-Path $dest 'candle.exe'))) { throw 'WiX prefetch did not produce candle.exe' }
 
       - name: Build and Publish Release
         uses: tauri-apps/tauri-action@v0
