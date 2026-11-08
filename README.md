@@ -48,7 +48,7 @@ Tested versions, as pinned in `package-lock.json` and `src-tauri/Cargo.lock`:
 
 `npm ci` and Cargo install exactly the locked versions, so a local build matches the release build.
 
-Supported desktop systems: macOS 10.15+, Windows 10/11, and Linux with WebKitGTK 4.1: Ubuntu 22.04 and newer, Debian 12+, current Fedora (CI uses Ubuntu 24.04).
+Supported desktop systems: macOS 10.15+, Windows 10/11, and Linux with WebKitGTK 4.1: Ubuntu 22.04 and newer, Debian 12+, current Fedora. Release builds are made on Ubuntu 22.04 so the Linux packages run on 22.04 and newer.
 
 ## Install Build Tools
 
