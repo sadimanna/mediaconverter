@@ -1,5 +1,6 @@
-import React from "react";
-import { open } from "@tauri-apps/api/dialog";
+import React, { useEffect, useRef } from "react";
+import { open } from "@tauri-apps/plugin-dialog";
+import { getCurrentWebview } from "@tauri-apps/api/webview";
 
 type FilePickerProps = {
   label: string;
@@ -42,12 +43,48 @@ export default function FilePicker({
     onPick(normalizePaths(selection));
   };
 
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const files = Array.from(event.dataTransfer.files || []);
-    const paths = files.map((file) => (file as unknown as { path?: string }).path).filter(Boolean) as string[];
-    if (paths.length > 0) onPick(paths);
-  };
+  const dropZoneRef = useRef<HTMLDivElement>(null);
+  const onPickRef = useRef(onPick);
+  onPickRef.current = onPick;
+
+  // Tauri v2 intercepts OS file drops and delivers real filesystem paths through
+  // the webview's drag-drop event. Several pickers can be on screen at once, so
+  // each one only accepts drops that land inside its own drop zone.
+  useEffect(() => {
+    let disposed = false;
+    let unlisten: (() => void) | undefined;
+
+    let webview: ReturnType<typeof getCurrentWebview>;
+    try {
+      webview = getCurrentWebview();
+    } catch {
+      return; // Not running inside Tauri (e.g. plain `vite` in a browser): no native drops.
+    }
+
+    webview
+      .onDragDropEvent((event) => {
+        if (event.payload.type !== "drop") return;
+        const zone = dropZoneRef.current;
+        if (!zone || event.payload.paths.length === 0) return;
+        const scale = window.devicePixelRatio || 1;
+        const x = event.payload.position.x / scale;
+        const y = event.payload.position.y / scale;
+        const rect = zone.getBoundingClientRect();
+        if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+          onPickRef.current(event.payload.paths);
+        }
+      })
+      .then((fn) => {
+        if (disposed) fn();
+        else unlisten = fn;
+      })
+      .catch(() => undefined);
+
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, []);
 
   return (
     <div className="space-y-2">
@@ -58,9 +95,8 @@ export default function FilePicker({
         </button>
       </div>
       <div
+        ref={dropZoneRef}
         className="dropzone"
-        onDragOver={(event) => event.preventDefault()}
-        onDrop={handleDrop}
       >
         {value.length === 0 ? (
           <div>Drag and drop files here.</div>

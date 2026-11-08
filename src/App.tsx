@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
-import { save } from "@tauri-apps/api/dialog";
+import { save } from "@tauri-apps/plugin-dialog";
 import VideoTools from "./components/VideoTools";
 import ImageTools from "./components/ImageTools";
 import DatasetTools from "./components/DatasetTools";

@@ -32,3 +32,6 @@ Thumbs.db
 
 # Hallmark design-run notes and screenshots
 .hallmark/
+
+# Tauri v2 generated schemas
+src-tauri/gen/

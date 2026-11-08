@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { save } from "@tauri-apps/api/dialog";
+import { save } from "@tauri-apps/plugin-dialog";
 import FilePicker from "./FilePicker";
 
 type ImageJobInput = {

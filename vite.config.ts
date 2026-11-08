@@ -8,10 +8,10 @@ export default defineConfig(({ mode }) => ({
     port: 1420,
     strictPort: true
   },
-  envPrefix: ["VITE_", "TAURI_"],
+  envPrefix: ["VITE_", "TAURI_ENV_"],
   build: {
-    target: process.env.TAURI_PLATFORM ? "es2021" : "modules",
-    minify: process.env.TAURI_PLATFORM ? "esbuild" : "esbuild",
-    sourcemap: !!process.env.TAURI_DEBUG
+    target: process.env.TAURI_ENV_PLATFORM ? "es2021" : "modules",
+    minify: "esbuild",
+    sourcemap: !!process.env.TAURI_ENV_DEBUG
   }
 }));
