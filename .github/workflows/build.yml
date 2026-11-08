@@ -161,6 +161,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: "FFmpeg Studio ${{ github.ref_name }}"
+          releaseName: "VizWright ${{ github.ref_name }}"
           releaseDraft: false
           prerelease: false

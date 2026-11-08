@@ -2,7 +2,7 @@
  * nav: left rail, grouped (Convert, Datasets, App), collapses to a top strip under 60rem · signature: the running job on the rail, name, percent and a 2px meter · states: empty queue, running, done, failed, cancelled, FFmpeg missing
  * axes: dark/grotesk-sans/cool · posture: committed · contrast: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H3 E4 S4 R4 V4 · weakest: H, an app has no hero; the page title and the rail carry the first read */
-/* Hallmark · reworded "FFmpeg Studio" h1 to the rail wordmark · the h1 is now the current tool's name */
+/* Hallmark · reworded the app-name h1 to the rail wordmark · the h1 is now the current tool's name */
 /* Hallmark · dropped "Tauri-powered media conversion suite" subtitle · it named the framework, not the tool */
 @import url("https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100,400;100,500;125,300&family=JetBrains+Mono:wght@400&display=swap");
 @import url("./tokens.css");

@@ -1,6 +1,6 @@
-# FFmpeg Studio (Tauri + React)
+# VizWright: a desktop GUI for FFmpeg (Tauri + React)
 
-FFmpeg Studio is a cross‑platform desktop app built with Tauri (Rust) and React that wraps FFmpeg into a clean, modern GUI. It’s designed for real production work: video conversion, image processing, dataset extraction, and media inspection — all with job queues, progress tracking, and deterministic outputs.
+VizWright (formerly "FFmpeg Studio") is a cross‑platform desktop app built with Tauri (Rust) and React that wraps FFmpeg into a clean, modern GUI. It’s designed for real production work: video conversion, image processing, dataset extraction, and media inspection — all with job queues, progress tracking, and deterministic outputs.
 
 A production-ready desktop template that wraps FFmpeg with a modern GUI. Built with Tauri (Rust) and React (Vite) for cross-platform distribution.
 
@@ -268,6 +268,8 @@ To customize icons for installers, add icons and update `src-tauri/tauri.conf.js
 ## Release Disclaimer
 
 macOS and Windows release binaries are built **without code-signing or notarization** by default. Some systems may block or warn when launching these installers. You can still run the app locally in dev mode from the terminal using `npx tauri dev`.
+
+VizWright is an independent open-source project and is not affiliated with or endorsed by the FFmpeg project. FFmpeg is a trademark of Fabrice Bellard.
 
 ## Security Notes
 

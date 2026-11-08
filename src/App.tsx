@@ -411,7 +411,7 @@ export default function App() {
     <div className="shell" data-rail={railCollapsed ? "collapsed" : "open"}>
       <aside className="rail" id="app-rail">
         <div className="rail-top">
-          <div className="wordmark">FFmpeg Studio</div>
+          <div className="wordmark">VizWright</div>
           <button
             type="button"
             className="rail-toggle"
