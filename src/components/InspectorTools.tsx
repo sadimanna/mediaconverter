@@ -104,10 +104,10 @@ export default function InspectorTools() {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Media Inspector</h2>
-          <span className="badge">FFprobe</span>
+          <span className="tag">FFprobe</span>
         </div>
 
         <FilePicker
@@ -118,7 +118,7 @@ export default function InspectorTools() {
           helper="Top-level only. Videos and images are detected by extension."
         />
 
-        <div className="text-xs text-slate-400">
+        <div className="text-xs text-muted">
           Detected files: {detected.length} (videos: {counts.videos}, images: {counts.images})
         </div>
 
@@ -133,12 +133,12 @@ export default function InspectorTools() {
           ) : null}
         </div>
 
-        {error ? <div className="text-xs text-coral">{error}</div> : null}
+        {error ? <div className="text-xs text-error">{error}</div> : null}
       </div>
 
       {summary ? (
         <div className="space-y-4">
-          <div className="glass-card p-5 space-y-2 text-sm text-slate-200">
+          <div className="well p-5 space-y-2 text-sm text-ink-2">
             <h3 className="section-title text-base">Summary</h3>
             <div>Total files: {summary.stats.total_files}</div>
             <div>Videos: {summary.stats.video_count}</div>
@@ -163,11 +163,11 @@ export default function InspectorTools() {
             ) : null}
           </div>
 
-          <div className="glass-card p-5">
+          <div className="well p-5">
             <h3 className="section-title text-base">Per-file Info</h3>
             <div className="mt-3 overflow-auto">
-              <table className="w-full text-xs text-slate-200">
-                <thead className="text-slate-400">
+              <table className="w-full text-xs text-ink-2">
+                <thead className="text-muted">
                   <tr>
                     <th className="pb-2 text-left">File</th>
                     <th className="pb-2 text-left">Type</th>
@@ -180,7 +180,7 @@ export default function InspectorTools() {
                 </thead>
                 <tbody>
                   {summary.entries.map((entry) => (
-                    <tr key={entry.path} className="border-t border-slate-800/50">
+                    <tr key={entry.path} className="border-t border-rule">
                       <td className="py-2 pr-4 max-w-[280px] truncate">{entry.path}</td>
                       <td className="py-2 pr-4">{entry.media_type}</td>
                       <td className="py-2 pr-4">{entry.codec ?? "-"}</td>

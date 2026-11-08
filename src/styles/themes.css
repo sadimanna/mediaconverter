@@ -1,0 +1,82 @@
+/* Window colour themes. Dark is the default in tokens.css; each light theme
+   is a pastel ground with ink, rules and accent retuned for contrast. */
+
+:root {
+  --swatch-dark: oklch(21% 0.042 262);
+  --swatch-blue: oklch(90% 0.05 250);
+  --swatch-pink: oklch(90% 0.05 350);
+  --swatch-green: oklch(86% 0.07 150);
+  --swatch-yellow: oklch(91% 0.1 92);
+  --swatch-white: oklch(99% 0.005 260);
+  --swatch-edge: color-mix(in oklab, var(--color-ink) 30%, transparent);
+  --color-indicator: var(--color-accent);
+  --color-accent-edge: transparent;
+}
+
+:root[data-theme="blue"],
+:root[data-theme="pink"],
+:root[data-theme="green"],
+:root[data-theme="yellow"],
+:root[data-theme="white"] {
+  color-scheme: light;
+  --color-error: oklch(50% 0.17 27);
+  --color-success: oklch(46% 0.12 150);
+  --color-accent-ink: oklch(98.5% 0.008 250);
+  --shadow-card: 0 20px 40px -24px oklch(30% 0.04 260 / 0.25);
+}
+
+:root[data-theme="blue"] {
+  --color-paper: oklch(95.5% 0.022 250); --color-paper-2: oklch(92% 0.034 250); --color-paper-3: oklch(88.5% 0.045 250);
+  --color-ink: oklch(24% 0.05 258); --color-ink-2: oklch(33% 0.06 256); --color-muted: oklch(46% 0.05 254);
+  --color-rule: oklch(86% 0.035 250); --color-rule-2: oklch(72% 0.05 250);
+  --color-accent: oklch(52% 0.14 255); --color-accent-2: oklch(44% 0.14 258); --color-focus: oklch(55% 0.17 255);
+}
+
+:root[data-theme="pink"] {
+  --color-paper: oklch(95.5% 0.022 350); --color-paper-2: oklch(92.5% 0.034 350); --color-paper-3: oklch(89% 0.045 350);
+  --color-ink: oklch(25% 0.05 350); --color-ink-2: oklch(34% 0.06 350); --color-muted: oklch(47% 0.05 350);
+  --color-rule: oklch(87% 0.035 350); --color-rule-2: oklch(73% 0.05 350);
+  --color-accent: oklch(52% 0.15 355); --color-accent-2: oklch(44% 0.15 355); --color-focus: oklch(55% 0.18 355);
+}
+
+:root[data-theme="green"] {
+  --color-paper: oklch(93% 0.035 150); --color-paper-2: oklch(89.5% 0.046 150); --color-paper-3: oklch(86% 0.056 150);
+  --color-ink: oklch(24% 0.05 155); --color-ink-2: oklch(32% 0.06 155); --color-muted: oklch(43% 0.05 155);
+  --color-rule: oklch(83% 0.045 150); --color-rule-2: oklch(67% 0.06 150);
+  --color-accent: oklch(47% 0.11 155); --color-accent-2: oklch(40% 0.11 155); --color-focus: oklch(50% 0.14 155);
+}
+
+:root[data-theme="yellow"] {
+  --color-paper: oklch(96.5% 0.045 95); --color-paper-2: oklch(93% 0.065 93); --color-paper-3: oklch(89.5% 0.08 90);
+  --color-ink: oklch(25% 0.04 70); --color-ink-2: oklch(33% 0.05 70); --color-muted: oklch(45% 0.05 72);
+  --color-rule: oklch(86% 0.065 90); --color-rule-2: oklch(70% 0.08 85);
+  --color-accent: oklch(80% 0.16 85); --color-accent-2: oklch(70% 0.16 80); --color-accent-ink: oklch(22% 0.04 70); --color-focus: oklch(50% 0.12 70);
+  --color-indicator: oklch(58% 0.13 72); --color-accent-edge: oklch(58% 0.13 72);
+}
+
+:root[data-theme="white"] {
+  --color-paper: oklch(99% 0.005 260); --color-paper-2: oklch(96.5% 0.004 260); --color-paper-3: oklch(93.5% 0.006 260);
+  --color-ink: oklch(20% 0.012 260); --color-ink-2: oklch(30% 0.014 260); --color-muted: oklch(46% 0.014 260);
+  --color-rule: oklch(90% 0.006 260); --color-rule-2: oklch(76% 0.01 260);
+  --color-accent: oklch(50% 0.13 255); --color-accent-2: oklch(42% 0.13 258); --color-focus: oklch(55% 0.16 255);
+}
+
+/* the picker */
+.theme-picker { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.theme-option {
+  display: inline-flex; align-items: center; gap: var(--space-xs);
+  min-height: 40px; padding: 0 var(--space-md) 0 var(--space-xs);
+  font-size: var(--text-sm); font-weight: 500; color: var(--color-ink-2);
+  border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-card);
+  transition: background-color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out);
+}
+.theme-option:hover { background: var(--color-paper-3); color: var(--color-ink); }
+.theme-option:active { background: var(--color-rule); }
+.theme-option[aria-checked="true"] { border-color: var(--color-ink); color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-ink); }
+.swatch { width: 24px; height: 24px; flex: none; box-shadow: inset 0 0 0 1px var(--swatch-edge); }
+.swatch[data-swatch="dark"] { background: var(--swatch-dark); }
+.swatch[data-swatch="blue"] { background: var(--swatch-blue); }
+.swatch[data-swatch="pink"] { background: var(--swatch-pink); }
+.swatch[data-swatch="green"] { background: var(--swatch-green); }
+.swatch[data-swatch="yellow"] { background: var(--swatch-yellow); }
+.swatch[data-swatch="white"] { background: var(--swatch-white); }

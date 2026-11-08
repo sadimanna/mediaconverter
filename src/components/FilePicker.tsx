@@ -52,13 +52,13 @@ export default function FilePicker({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-sm text-slate-200">{label}</span>
+        <span className="text-sm text-ink-2">{label}</span>
         <button type="button" className="btn-secondary" onClick={handleBrowse}>
           Browse
         </button>
       </div>
       <div
-        className="rounded-lg border border-dashed border-slate-700/60 bg-ink/40 px-3 py-3 text-xs text-slate-400"
+        className="dropzone"
         onDragOver={(event) => event.preventDefault()}
         onDrop={handleDrop}
       >
@@ -67,14 +67,14 @@ export default function FilePicker({
         ) : (
           <ul className="space-y-1">
             {value.map((item) => (
-              <li key={item} className="truncate text-slate-200">
+              <li key={item} className="truncate text-ink-2">
                 {item}
               </li>
             ))}
           </ul>
         )}
       </div>
-      {helper ? <p className="text-xs text-slate-500">{helper}</p> : null}
+      {helper ? <p className="text-xs text-muted">{helper}</p> : null}
     </div>
   );
 }

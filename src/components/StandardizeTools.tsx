@@ -87,15 +87,15 @@ export default function StandardizeTools({ onAddJob }: StandardizeToolsProps) {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Multimodal Standardization</h2>
-          <span className="badge">Batch</span>
+          <span className="tag">Batch</span>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Preset</label>
+            <label className="text-xs text-muted">Preset</label>
             <select className="select" value={preset} onChange={(e) => handlePresetChange(e.target.value as PresetId)}>
               {presetOptions.map((option) => (
                 <option key={option.id} value={option.id}>
@@ -105,7 +105,7 @@ export default function StandardizeTools({ onAddJob }: StandardizeToolsProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Mode</label>
+            <label className="text-xs text-muted">Mode</label>
             <select className="select" value={mode} onChange={(e) => setMode(e.target.value as "video" | "audio")}>
               <option value="video">Video</option>
               <option value="audio">Audio</option>
@@ -132,23 +132,23 @@ export default function StandardizeTools({ onAddJob }: StandardizeToolsProps) {
         {mode === "video" ? (
           <div className="grid gap-4 md:grid-cols-3">
             <div>
-              <label className="text-xs text-slate-400">Target FPS</label>
+              <label className="text-xs text-muted">Target FPS</label>
               <input className="input" value={fps} onChange={(e) => setFps(e.target.value)} />
             </div>
             <div className="flex flex-col justify-end gap-2">
-              <label className="inline-flex items-center gap-2 text-sm text-slate-200">
+              <label className="inline-flex items-center gap-2 text-sm text-ink-2">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 accent-mint"
+                  className="h-4 w-4"
                   checked={reencode}
                   onChange={(e) => setReencode(e.target.checked)}
                 />
                 Re-encode (required for FPS changes)
               </label>
-              <label className="inline-flex items-center gap-2 text-sm text-slate-200">
+              <label className="inline-flex items-center gap-2 text-sm text-ink-2">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 accent-mint"
+                  className="h-4 w-4"
                   checked={interpolate}
                   onChange={(e) => setInterpolate(e.target.checked)}
                 />
@@ -156,7 +156,7 @@ export default function StandardizeTools({ onAddJob }: StandardizeToolsProps) {
               </label>
             </div>
             <div>
-              <label className="text-xs text-slate-400">Video Codec</label>
+              <label className="text-xs text-muted">Video Codec</label>
               <select className="select" value={videoCodec} onChange={(e) => setVideoCodec(e.target.value)}>
                 <option value="libx264">H.264 (libx264)</option>
                 <option value="libx265">H.265 (libx265)</option>
@@ -165,7 +165,7 @@ export default function StandardizeTools({ onAddJob }: StandardizeToolsProps) {
               </select>
             </div>
             <div>
-              <label className="text-xs text-slate-400">Container</label>
+              <label className="text-xs text-muted">Container</label>
               <select className="select" value={videoContainer} onChange={(e) => setVideoContainer(e.target.value)}>
                 <option value="mp4">MP4</option>
                 <option value="mkv">MKV</option>
@@ -180,18 +180,18 @@ export default function StandardizeTools({ onAddJob }: StandardizeToolsProps) {
         {mode === "audio" ? (
           <div className="grid gap-4 md:grid-cols-3">
             <div>
-              <label className="text-xs text-slate-400">Sample Rate (Hz)</label>
+              <label className="text-xs text-muted">Sample Rate (Hz)</label>
               <input className="input" value={audioRate} onChange={(e) => setAudioRate(e.target.value)} />
             </div>
             <div>
-              <label className="text-xs text-slate-400">Channels</label>
+              <label className="text-xs text-muted">Channels</label>
               <select className="select" value={audioChannels} onChange={(e) => setAudioChannels(e.target.value)}>
                 <option value="1">Mono</option>
                 <option value="2">Stereo</option>
               </select>
             </div>
             <div>
-              <label className="text-xs text-slate-400">Format</label>
+              <label className="text-xs text-muted">Format</label>
               <select className="select" value={audioFormat} onChange={(e) => setAudioFormat(e.target.value as "wav" | "flac")}>
                 <option value="wav">WAV</option>
                 <option value="flac">FLAC</option>

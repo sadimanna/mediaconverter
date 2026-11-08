@@ -253,10 +253,10 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Convert or Remux</h2>
-          <span className="badge">Video</span>
+          <span className="tag">Video</span>
         </div>
         <FilePicker
           label="Source video"
@@ -266,14 +266,14 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
         />
         <div className="grid gap-4 lg:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Mode</label>
+            <label className="text-xs text-muted">Mode</label>
             <select className="select" value={convertMode} onChange={(e) => setConvertMode(e.target.value as "convert" | "remux")}>
               <option value="convert">Convert</option>
               <option value="remux">Remux (copy streams)</option>
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Preset</label>
+            <label className="text-xs text-muted">Preset</label>
             <select
               className="select"
               value={convertPreset}
@@ -292,7 +292,7 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Format</label>
+            <label className="text-xs text-muted">Format</label>
             <select className="select" value={convertFormat} onChange={(e) => setConvertFormat(e.target.value)}>
               {VIDEO_FORMATS.map((format) => (
                 <option key={format} value={format}>
@@ -321,19 +321,19 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
         </button>
       </div>
 
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Trim Video</h2>
-          <span className="badge">Segment</span>
+          <span className="tag">Segment</span>
         </div>
         <FilePicker label="Source video" value={trimInput} onPick={setTrimInput} accept={[".mp4", ".mkv", ".webm", ".avi", ".mov"]} />
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Start (HH:MM:SS)</label>
+            <label className="text-xs text-muted">Start (HH:MM:SS)</label>
             <input className="input" value={trimStart} onChange={(e) => setTrimStart(e.target.value)} />
           </div>
           <div>
-            <label className="text-xs text-slate-400">End (optional)</label>
+            <label className="text-xs text-muted">End (optional)</label>
             <input className="input" placeholder="00:00:20" value={trimEnd} onChange={(e) => setTrimEnd(e.target.value)} />
           </div>
           <div className="flex items-end">
@@ -346,15 +346,15 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
         </button>
       </div>
 
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Extract Audio</h2>
-          <span className="badge">Audio</span>
+          <span className="tag">Audio</span>
         </div>
         <FilePicker label="Source video" value={extractInput} onPick={setExtractInput} accept={[".mp4", ".mkv", ".webm", ".avi", ".mov"]} />
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="text-xs text-slate-400">Format</label>
+            <label className="text-xs text-muted">Format</label>
             <select className="select" value={extractPreset} onChange={(e) => setExtractPreset(e.target.value)}>
               {audioPresets.map((preset) => (
                 <option key={preset.id} value={preset.id}>
@@ -373,10 +373,10 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
         </button>
       </div>
 
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Merge External Audio</h2>
-          <span className="badge">AV Merge</span>
+          <span className="tag">AV Merge</span>
         </div>
         <div className="grid gap-4 lg:grid-cols-2">
           <FilePicker label="Video input" value={mergeVideo} onPick={setMergeVideo} accept={[".mp4", ".mkv", ".webm", ".avi", ".mov"]} />
@@ -391,15 +391,15 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
         </button>
       </div>
 
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">GIF to Video</h2>
-          <span className="badge">Animation</span>
+          <span className="tag">Animation</span>
         </div>
         <FilePicker label="GIF input" value={gifInput} onPick={setGifInput} accept={[".gif"]} />
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Preset</label>
+            <label className="text-xs text-muted">Preset</label>
             <select className="select" value={gifPreset} onChange={(e) => setGifPreset(e.target.value)}>
               {gifPresets.map((preset) => (
                 <option key={preset.id} value={preset.id}>
@@ -409,7 +409,7 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Format</label>
+            <label className="text-xs text-muted">Format</label>
             <select className="select" value={gifFormat} onChange={(e) => setGifFormat(e.target.value)}>
               {VIDEO_FORMATS.map((format) => (
                 <option key={format} value={format}>
@@ -428,19 +428,19 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
         </button>
       </div>
 
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Images to Video</h2>
-          <span className="badge">Batch</span>
+          <span className="tag">Batch</span>
         </div>
         <FilePicker label="Image sequence" value={sequenceInputs} onPick={setSequenceInputs} multiple accept={[".png", ".jpg", ".jpeg", ".webp", ".tiff", ".bmp"]} />
         <div className="grid gap-4 md:grid-cols-4">
           <div>
-            <label className="text-xs text-slate-400">Frame Rate</label>
+            <label className="text-xs text-muted">Frame Rate</label>
             <input className="input" value={sequenceFrameRate} onChange={(e) => setSequenceFrameRate(e.target.value)} />
           </div>
           <div>
-            <label className="text-xs text-slate-400">Preset</label>
+            <label className="text-xs text-muted">Preset</label>
             <select className="select" value={sequencePreset} onChange={(e) => setSequencePreset(e.target.value)}>
               {sequencePresets.map((preset) => (
                 <option key={preset.id} value={preset.id}>
@@ -450,7 +450,7 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Format</label>
+            <label className="text-xs text-muted">Format</label>
             <select className="select" value={sequenceFormat} onChange={(e) => setSequenceFormat(e.target.value)}>
               {VIDEO_FORMATS.map((format) => (
                 <option key={format} value={format}>
@@ -459,7 +459,7 @@ export default function VideoTools({ onAddJob }: VideoToolsProps) {
               ))}
             </select>
           </div>
-          <label className="flex items-center gap-2 text-xs text-slate-400">
+          <label className="flex items-center gap-2 text-xs text-muted">
             <input type="checkbox" checked={sequenceSort} onChange={(e) => setSequenceSort(e.target.checked)} />
             Sort by filename
           </label>

@@ -141,15 +141,15 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Convert Image</h2>
-          <span className="badge">Single</span>
+          <span className="tag">Single</span>
         </div>
         <FilePicker label="Source image" value={convertInput} onPick={setConvertInput} accept={[".png", ".jpg", ".jpeg", ".webp", ".tiff"]} />
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Format</label>
+            <label className="text-xs text-muted">Format</label>
             <select className="select" value={convertFormat} onChange={(e) => setConvertFormat(e.target.value)}>
               {IMAGE_FORMATS.map((format) => (
                 <option key={format} value={format}>
@@ -159,7 +159,7 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Quality</label>
+            <label className="text-xs text-muted">Quality</label>
             <input
               className="input"
               type="range"
@@ -168,9 +168,9 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
               value={convertQuality}
               onChange={(e) => setConvertQuality(Number(e.target.value))}
             />
-            <div className="text-xs text-slate-500">{convertQuality}</div>
+            <div className="text-xs text-muted">{convertQuality}</div>
           </div>
-          <label className="flex items-center gap-2 text-xs text-slate-400">
+          <label className="flex items-center gap-2 text-xs text-muted">
             <input type="checkbox" checked={convertGrayscale} onChange={(e) => setConvertGrayscale(e.target.checked)} />
             Grayscale
           </label>
@@ -184,16 +184,16 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
         </button>
       </div>
 
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Batch Convert</h2>
-          <span className="badge">Batch</span>
+          <span className="tag">Batch</span>
         </div>
         <FilePicker label="Source images" value={batchInputs} onPick={setBatchInputs} multiple accept={[".png", ".jpg", ".jpeg", ".webp", ".tiff"]} />
         <FilePicker label="Output folder" value={batchOutputDir} onPick={setBatchOutputDir} directory helper="Each file keeps its name with the new extension." />
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Format</label>
+            <label className="text-xs text-muted">Format</label>
             <select className="select" value={batchFormat} onChange={(e) => setBatchFormat(e.target.value)}>
               {IMAGE_FORMATS.map((format) => (
                 <option key={format} value={format}>
@@ -203,7 +203,7 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Quality</label>
+            <label className="text-xs text-muted">Quality</label>
             <input
               className="input"
               type="range"
@@ -212,9 +212,9 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
               value={batchQuality}
               onChange={(e) => setBatchQuality(Number(e.target.value))}
             />
-            <div className="text-xs text-slate-500">{batchQuality}</div>
+            <div className="text-xs text-muted">{batchQuality}</div>
           </div>
-          <label className="flex items-center gap-2 text-xs text-slate-400">
+          <label className="flex items-center gap-2 text-xs text-muted">
             <input type="checkbox" checked={batchGrayscale} onChange={(e) => setBatchGrayscale(e.target.checked)} />
             Grayscale
           </label>
@@ -224,23 +224,23 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
         </button>
       </div>
 
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Resize Image</h2>
-          <span className="badge">Aspect Ratio</span>
+          <span className="tag">Aspect Ratio</span>
         </div>
         <FilePicker label="Source image" value={resizeInput} onPick={setResizeInput} accept={[".png", ".jpg", ".jpeg", ".webp", ".tiff"]} />
         <div className="grid gap-4 md:grid-cols-4">
           <div>
-            <label className="text-xs text-slate-400">Width</label>
+            <label className="text-xs text-muted">Width</label>
             <input className="input" value={resizeWidth} onChange={(e) => setResizeWidth(e.target.value)} />
           </div>
           <div>
-            <label className="text-xs text-slate-400">Height</label>
+            <label className="text-xs text-muted">Height</label>
             <input className="input" value={resizeHeight} onChange={(e) => setResizeHeight(e.target.value)} />
           </div>
           <div>
-            <label className="text-xs text-slate-400">Format</label>
+            <label className="text-xs text-muted">Format</label>
             <select className="select" value={resizeFormat} onChange={(e) => setResizeFormat(e.target.value)}>
               {IMAGE_FORMATS.map((format) => (
                 <option key={format} value={format}>
@@ -250,7 +250,7 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
             </select>
           </div>
           <div>
-            <label className="text-xs text-slate-400">Quality</label>
+            <label className="text-xs text-muted">Quality</label>
             <input
               className="input"
               type="range"
@@ -259,10 +259,10 @@ export default function ImageTools({ onAddJob }: ImageToolsProps) {
               value={resizeQuality}
               onChange={(e) => setResizeQuality(Number(e.target.value))}
             />
-            <div className="text-xs text-slate-500">{resizeQuality}</div>
+            <div className="text-xs text-muted">{resizeQuality}</div>
           </div>
         </div>
-        <label className="flex items-center gap-2 text-xs text-slate-400">
+        <label className="flex items-center gap-2 text-xs text-muted">
           <input type="checkbox" checked={resizeGrayscale} onChange={(e) => setResizeGrayscale(e.target.checked)} />
           Grayscale
         </label>

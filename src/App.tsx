@@ -7,6 +7,7 @@ import DatasetTools from "./components/DatasetTools";
 import StandardizeTools from "./components/StandardizeTools";
 import InspectorTools from "./components/InspectorTools";
 import JobQueue, { JobItem } from "./components/JobQueue";
+import { THEMES, ThemeId, applyTheme, loadTheme } from "./theme";
 import {
   cancelJob,
   checkFfmpeg,
@@ -72,6 +73,14 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<
     "video" | "image" | "dataset" | "standardize" | "inspector" | "queue" | "settings"
   >("video");
+  const [railCollapsed, setRailCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("rail-collapsed") === "1";
+    } catch {
+      return false;
+    }
+  });
+  const [theme, setTheme] = useState<ThemeId>(loadTheme);
   const [jobs, setJobs] = useState<JobItem[]>([]);
   const [runningJobId, setRunningJobId] = useState<string | null>(null);
   const [ffmpegInfo, setFfmpegInfo] = useState<FfmpegCheck>(defaultFfmpeg);
@@ -350,52 +359,125 @@ export default function App() {
     };
   }, []);
 
-  return (
-    <div className="min-h-screen p-6">
-      <div className="app-shell mx-auto max-w-6xl p-6">
-        <header className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold">FFmpeg Studio</h1>
-            <p className="text-sm text-slate-400">Tauri-powered media conversion suite</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {ffmpegInfo.available ? (
-              <span className="badge">FFmpeg ready {ffmpegInfo.version ? `(${ffmpegInfo.version})` : ""}</span>
-            ) : (
-              <span className="badge text-coral border-coral/40">FFmpeg missing</span>
-            )}
-          </div>
-        </header>
+  const chooseTheme = (next: ThemeId) => {
+    setTheme(next);
+    applyTheme(next);
+  };
 
+  const toggleRail = () => {
+    setRailCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("rail-collapsed", next ? "1" : "0");
+      } catch {
+        // storage unavailable; keep the in-memory state
+      }
+      return next;
+    });
+  };
+
+  const tabGroups = [
+    {
+      label: "Convert",
+      tabs: [
+        { id: "video", label: "Video" },
+        { id: "image", label: "Image" }
+      ]
+    },
+    {
+      label: "Datasets",
+      tabs: [
+        { id: "dataset", label: "Dataset Extraction" },
+        { id: "standardize", label: "Standardization" },
+        { id: "inspector", label: "Inspector" }
+      ]
+    },
+    {
+      label: "App",
+      tabs: [
+        { id: "queue", label: "Queue" },
+        { id: "settings", label: "Settings" }
+      ]
+    }
+  ] as const;
+  const allTabs: ReadonlyArray<{ id: string; label: string }> = tabGroups.flatMap((group): ReadonlyArray<{ id: string; label: string }> => group.tabs);
+  const activeLabel = allTabs.find((tab) => tab.id === activeTab)?.label;
+  const pendingCount = jobs.filter((job) => job.status === "queued" || job.status === "running").length;
+  const runningJob = jobs.find((job) => job.status === "running");
+  const runningPercent = runningJob ? Math.round(Math.min(100, Math.max(0, runningJob.progress * 100))) : 0;
+  const ffmpegVersion = ffmpegInfo.version?.match(/version\s+(\S+)/)?.[1] ?? ffmpegInfo.version;
+
+  return (
+    <div className="shell" data-rail={railCollapsed ? "collapsed" : "open"}>
+      <aside className="rail" id="app-rail">
+        <div className="rail-top">
+          <div className="wordmark">FFmpeg Studio</div>
+          <button
+            type="button"
+            className="rail-toggle"
+            aria-controls="app-rail"
+            aria-expanded={!railCollapsed}
+            aria-label={railCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={railCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            onClick={toggleRail}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <rect x="1.5" y="2.5" width="13" height="11" fill="none" stroke="currentColor" />
+              <line x1="6" y1="2.5" x2="6" y2="13.5" stroke="currentColor" />
+            </svg>
+          </button>
+        </div>
+
+        <nav className="rail-nav" aria-label="Tools">
+          {tabGroups.map((group) => (
+            <div key={group.label} className="rail-group">
+              <div className="rail-group-label">{group.label}</div>
+              {group.tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  className="rail-link"
+                  aria-current={activeTab === tab.id ? "page" : undefined}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <span>{tab.label}</span>
+                  {tab.id === "queue" && pendingCount > 0 ? <span className="num rail-count">{pendingCount}</span> : null}
+                </button>
+              ))}
+            </div>
+          ))}
+        </nav>
+
+        <div className="rail-foot">
+          {runningJob ? (
+            <div className="rail-running">
+              <div className="rail-running-head">
+                <span className="truncate">{runningJob.name}</span>
+                <span className="num">{runningPercent}%</span>
+              </div>
+              <div className="progress-track">
+                <div className="progress-bar" style={{ width: `${runningPercent}%` }} />
+              </div>
+            </div>
+          ) : null}
+          {ffmpegInfo.available ? (
+            <div className="rail-status">FFmpeg {ffmpegVersion ?? "ready"}</div>
+          ) : (
+            <div className="rail-status rail-status--missing">FFmpeg missing</div>
+          )}
+        </div>
+      </aside>
+
+      <main className="main">
         {!ffmpegInfo.available ? (
-          <div className="mt-4 rounded-xl border border-coral/40 bg-coral/10 p-4 text-sm text-coral">
+          <div className="alert text-sm" role="alert">
             FFmpeg is not available on this system. Install FFmpeg and restart the app. {ffmpegInfo.error}
           </div>
         ) : null}
 
-        <nav className="mt-6 flex flex-wrap gap-2">
-          {([
-            { id: "video", label: "Video" },
-            { id: "image", label: "Image" },
-            { id: "dataset", label: "Dataset Extraction" },
-            { id: "standardize", label: "Standardization" },
-            { id: "inspector", label: "Inspector" },
-            { id: "queue", label: "Queue" },
-            { id: "settings", label: "Settings" }
-          ] as const).map((tab) => (
-            <button
-              key={tab.id}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                activeTab === tab.id ? "bg-mint text-ink" : "bg-slate-800/60 text-slate-200 hover:text-mint"
-              }`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
+        {activeTab !== "queue" ? <h1 className="page-title">{activeLabel}</h1> : null}
 
-        <main className="mt-6">
+        <div className="main-body">
           {activeTab === "video" ? <VideoTools onAddJob={addJob} /> : null}
           {activeTab === "image" ? <ImageTools onAddJob={addJob} /> : null}
           {activeTab === "dataset" ? <DatasetTools onAddJob={addJob} /> : null}
@@ -411,17 +493,49 @@ export default function App() {
             />
           ) : null}
           {activeTab === "settings" ? (
-            <div className="glass-card p-6 space-y-4">
-              <h2 className="section-title text-lg">Settings</h2>
-              <div className="text-sm text-slate-300">
-                <p>FFmpeg status: {ffmpegInfo.available ? "Available" : "Missing"}</p>
-                {ffmpegInfo.version ? <p>Version: {ffmpegInfo.version}</p> : null}
-                <p className="text-xs text-slate-500 mt-2">Tip: enable hardware acceleration by adding NVENC, VideoToolbox, or QSV flags to presets.</p>
+            <div className="space-y-6">
+              <div className="tool">
+                <div>
+                  <h2 className="section-title">Window colour</h2>
+                </div>
+                <div className="theme-picker" role="radiogroup" aria-label="Window colour">
+                  {THEMES.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={theme === option.id}
+                      className="theme-option"
+                      onClick={() => chooseTheme(option.id)}
+                    >
+                      <span className="swatch" data-swatch={option.id} aria-hidden="true" />
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="tool">
+                <div>
+                  <h2 className="section-title">FFmpeg</h2>
+                </div>
+                <dl className="facts text-sm">
+                  <dt>FFmpeg status</dt>
+                  <dd>{ffmpegInfo.available ? "Available" : "Missing"}</dd>
+                  {ffmpegInfo.version ? (
+                    <>
+                      <dt>Version</dt>
+                      <dd>{ffmpegInfo.version}</dd>
+                    </>
+                  ) : null}
+                </dl>
+                <p className="text-sm text-muted">
+                  Tip: enable hardware acceleration by adding NVENC, VideoToolbox, or QSV flags to presets.
+                </p>
               </div>
             </div>
           ) : null}
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

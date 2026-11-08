@@ -109,15 +109,15 @@ export default function DatasetTools({ onAddJob }: DatasetToolsProps) {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-5 space-y-4">
+      <div className="tool">
         <div className="flex items-center justify-between">
           <h2 className="section-title text-lg">Dataset Extraction</h2>
-          <span className="badge">Deterministic</span>
+          <span className="tag">Deterministic</span>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Input Type</label>
+            <label className="text-xs text-muted">Input Type</label>
             <select className="select" value={inputMode} onChange={(e) => setInputMode(e.target.value as "file" | "folder")}>
               <option value="file">Select Video</option>
               <option value="folder">Select Folder</option>
@@ -143,7 +143,7 @@ export default function DatasetTools({ onAddJob }: DatasetToolsProps) {
         )}
 
         {inputMode === "folder" ? (
-          <div className="text-xs text-slate-400">Detected videos: {detectedVideos.length}</div>
+          <div className="text-xs text-muted">Detected videos: {detectedVideos.length}</div>
         ) : null}
 
         <FilePicker
@@ -154,7 +154,7 @@ export default function DatasetTools({ onAddJob }: DatasetToolsProps) {
           helper="Select an existing folder or type a new path below."
         />
         <div>
-          <label className="text-xs text-slate-400">Or create new folder (path)</label>
+          <label className="text-xs text-muted">Or create new folder (path)</label>
           <input
             className="input"
             placeholder="e.g. /Users/name/Datasets/output"
@@ -165,7 +165,7 @@ export default function DatasetTools({ onAddJob }: DatasetToolsProps) {
 
         <div className="grid gap-4 md:grid-cols-3">
           <div>
-            <label className="text-xs text-slate-400">Sampling Mode</label>
+            <label className="text-xs text-muted">Sampling Mode</label>
             <select className="select" value={mode} onChange={(e) => setMode(e.target.value as "fps" | "nth" | "random")}> 
               <option value="fps">Fixed FPS</option>
               <option value="nth">Every Nth Frame</option>
@@ -174,31 +174,31 @@ export default function DatasetTools({ onAddJob }: DatasetToolsProps) {
           </div>
           {mode === "fps" ? (
             <div>
-              <label className="text-xs text-slate-400">FPS</label>
+              <label className="text-xs text-muted">FPS</label>
               <input className="input" value={fps} onChange={(e) => setFps(e.target.value)} />
             </div>
           ) : null}
           {mode === "nth" ? (
             <div>
-              <label className="text-xs text-slate-400">Every Nth Frame</label>
+              <label className="text-xs text-muted">Every Nth Frame</label>
               <input className="input" value={nth} onChange={(e) => setNth(e.target.value)} />
             </div>
           ) : null}
           {mode === "random" ? (
             <div className="space-y-2">
               <div>
-                <label className="text-xs text-slate-400">K Frames</label>
+                <label className="text-xs text-muted">K Frames</label>
                 <input className="input" value={k} onChange={(e) => setK(e.target.value)} />
               </div>
               <div>
-                <label className="text-xs text-slate-400">Seed</label>
+                <label className="text-xs text-muted">Seed</label>
                 <input className="input" value={seed} onChange={(e) => setSeed(e.target.value)} />
               </div>
             </div>
           ) : null}
         </div>
 
-        <div className="text-xs text-slate-400">
+        <div className="text-xs text-muted">
           {inputMode === "file"
             ? `Expected frame count: ${expectedCount !== null ? expectedCount : "-"}`
             : "Expected frame count: -"}
