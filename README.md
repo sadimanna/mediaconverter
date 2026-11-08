@@ -139,8 +139,8 @@ The window colour (dark, blue, pink, green, chrome yellow or white) is chosen in
 Bump the version in `package.json`, `src-tauri/Cargo.toml` and `src-tauri/tauri.conf.json`, commit, then push a matching tag. The workflow builds all three platforms and publishes the release.
 
 ```bash
-git tag v1.0.3
-git push origin v1.0.3
+git tag v1.1.0
+git push origin v1.1.0
 ```
 
 ## Project Structure
