@@ -1,40 +1,36 @@
 {
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "FFmpeg Studio",
+  "version": "1.1.0",
+  "identifier": "com.example.ffmpegstudio",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
   },
-  "package": {
-    "productName": "FFmpeg Studio",
-    "version": "1.0.3"
-  },
-  "tauri": {
-    "allowlist": {
-      "dialog": {
-        "all": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.example.ffmpegstudio",
-      "icon": [
-        "icons/icon.png",
-        "icons/icon.ico",
-        "icons/icon.icns"
-      ]
-    },
+  "app": {
     "windows": [
       {
+        "label": "main",
         "title": "FFmpeg Studio",
         "width": 1200,
         "height": 800,
-        "resizable": true
+        "resizable": true,
+        "useHttpsScheme": true
       }
     ],
     "security": {
       "csp": null
     }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/icon.png",
+      "icons/icon.ico",
+      "icons/icon.icns"
+    ]
   }
 }

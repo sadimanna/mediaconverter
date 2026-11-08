@@ -37,17 +37,18 @@ Tested versions, as pinned in `package-lock.json` and `src-tauri/Cargo.lock`:
 | Component | Version | Notes |
 | --- | --- | --- |
 | Node.js | 20 LTS or newer (CI uses 20; also tested on 22) | npm 10+ |
-| Rust | 1.93.1, pinned in `src-tauri/rust-toolchain.toml` | `rustup` installs it automatically on first build |
-| Tauri | 1.8 (Rust crate), CLI 1.6.3, API 1.6.0 | Tauri v1, not v2 |
+| Rust | latest stable (tested on 1.99.1) | install with `rustup` |
+| Tauri | 2.x: Rust crate 2.12, CLI 2.12, API 2.12, `tauri-plugin-dialog` 2.8 | |
+| WebKitGTK (Linux only) | 4.1 | `libwebkit2gtk-4.1-dev` |
 | React | 18.3 | |
 | Vite | 5.4 | |
 | TypeScript | 5.9 | |
 | Tailwind CSS | 3.4 | |
 | FFmpeg | any recent build with `ffmpeg` and `ffprobe` (tested on 8.0) | needed at runtime |
 
-`npm ci` and Cargo install exactly the locked versions, and rustup picks the pinned Rust, so a local build matches the release build. Newer Rust releases fail to compile the Tauri v1 Linux backend (`wry` 0.24), which is why Rust is pinned.
+`npm ci` and Cargo install exactly the locked versions, so a local build matches the release build.
 
-Supported desktop systems: macOS 10.13+, Windows 10/11, and Linux with WebKitGTK 4.0 (Ubuntu 22.04 is what CI uses).
+Supported desktop systems: macOS 10.15+, Windows 10/11, and Linux with WebKitGTK 4.1: Ubuntu 22.04 and newer, Debian 12+, current Fedora. Release builds are made on Ubuntu 22.04 so the Linux packages run on 22.04 and newer.
 
 ## Install Build Tools
 
@@ -73,14 +74,23 @@ winget install Rustlang.Rustup
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential curl wget file libssl-dev \
-  libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+  libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source ~/.nvm/nvm.sh
 nvm install 20
 ```
 
-`libwebkit2gtk-4.0-dev` is not available on Ubuntu 24.04 and newer; build there in an Ubuntu 22.04 container or VM.
+### Linux (Fedora)
+
+```bash
+sudo dnf check-update
+sudo dnf install -y webkit2gtk4.1-devel openssl-devel curl wget file \
+  libappindicator-gtk3-devel librsvg2-devel
+sudo dnf group install -y "c-development"
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+sudo dnf install -y nodejs
+```
 
 Check the toolchain:
 
@@ -129,8 +139,8 @@ The window colour (dark, blue, pink, green, chrome yellow or white) is chosen in
 Bump the version in `package.json`, `src-tauri/Cargo.toml` and `src-tauri/tauri.conf.json`, commit, then push a matching tag. The workflow builds all three platforms and publishes the release.
 
 ```bash
-git tag v1.0.3
-git push origin v1.0.3
+git tag v1.1.0
+git push origin v1.1.0
 ```
 
 ## Project Structure
@@ -161,6 +171,8 @@ MediaConverter/
 │  │  ├─ main.rs
 │  │  ├─ ffmpeg.rs
 │  │  └─ progress.rs
+│  ├─ capabilities/
+│  │  └─ default.json      # permissions granted to the webview
 │  ├─ tauri.conf.json
 │  └─ Cargo.toml
 ├─ presets.json
@@ -259,9 +271,9 @@ macOS and Windows release binaries are built **without code-signing or notarizat
 
 ## Security Notes
 
-- Tauri allowlist is limited to `dialog` APIs in `src-tauri/tauri.conf.json`.
+- The webview's permissions are limited to `core:default` plus the dialog open/save commands in `src-tauri/capabilities/default.json`.
 - FFmpeg is launched directly by the Rust backend; only validated user inputs should be passed.
-- If you extend file system access (e.g., Tauri FS API), update the allowlist accordingly.
+- If you extend file system access (e.g., the Tauri FS plugin), grant only the permissions you need in that capability file.
 
 ## Extension Points
 

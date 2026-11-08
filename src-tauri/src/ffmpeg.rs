@@ -9,7 +9,7 @@ use std::io::{BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
 use std::process::{Child, ChildStderr, ChildStdout, Command, Stdio};
 use std::sync::{Arc, Mutex, OnceLock};
-use tauri::Window;
+use tauri::{Emitter, WebviewWindow};
 use uuid::Uuid;
 
 /// Locate an executable. GUI apps launched from Finder/Dock get a minimal PATH
@@ -270,7 +270,7 @@ fn check_ffmpeg_internal() -> Result<String, String> {
   Ok(version_line.to_string())
 }
 
-pub fn emit_ffmpeg_check(window: &Window) {
+pub fn emit_ffmpeg_check(window: &WebviewWindow) {
   let payload = match check_ffmpeg_internal() {
     Ok(version) => FfmpegCheck {
       available: true,
@@ -853,7 +853,7 @@ fn spawn_ffmpeg(
 }
 
 fn spawn_progress_thread(
-  window: Window,
+  window: WebviewWindow,
   job_id: String,
   stdout: ChildStdout,
   duration_ms: Option<u64>
@@ -891,7 +891,7 @@ fn append_error_log(output_root: &PathBuf, message: &str) {
 }
 
 fn emit_dataset_progress(
-  window: &Window,
+  window: &WebviewWindow,
   job_id: &str,
   current_video: &str,
   per_video: f64,
@@ -911,7 +911,7 @@ fn emit_dataset_progress(
 }
 
 fn spawn_dataset_progress_thread(
-  window: Window,
+  window: WebviewWindow,
   job_id: String,
   stdout: ChildStdout,
   duration_ms: Option<u64>,
@@ -948,7 +948,7 @@ fn spawn_dataset_progress_thread(
   });
 }
 
-fn emit_simple_progress(window: &Window, job_id: &str, percent: f64) {
+fn emit_simple_progress(window: &WebviewWindow, job_id: &str, percent: f64) {
   let payload = ProgressEvent {
     job_id: job_id.to_string(),
     out_time_ms: None,
@@ -961,7 +961,7 @@ fn emit_simple_progress(window: &Window, job_id: &str, percent: f64) {
 }
 
 fn spawn_log_thread(
-  window: Window,
+  window: WebviewWindow,
   job_id: String,
   stderr: ChildStderr,
   showinfo: Option<Arc<Mutex<Vec<FrameMeta>>>>
@@ -1126,7 +1126,7 @@ pub fn run_ffmpeg(args: Vec<String>) -> Result<String, String> {
 
 #[tauri::command]
 pub fn run_ffmpeg_with_progress(
-  window: Window,
+  window: WebviewWindow,
   state: tauri::State<JobRegistry>,
   args: Vec<String>
 ) -> Result<String, String> {
@@ -1166,7 +1166,7 @@ pub fn run_ffmpeg_with_progress(
 
 #[tauri::command]
 pub fn run_ffmpeg_image_sequence(
-  window: Window,
+  window: WebviewWindow,
   state: tauri::State<JobRegistry>,
   inputs: Vec<String>,
   framerate: f32,
@@ -1233,7 +1233,7 @@ pub fn run_ffmpeg_image_sequence(
 
 #[tauri::command]
 pub fn run_dataset_extraction(
-  window: Window,
+  window: WebviewWindow,
   state: tauri::State<JobRegistry>,
   request: DatasetRequest
 ) -> Result<String, String> {
@@ -1522,7 +1522,7 @@ pub fn run_dataset_extraction(
 
 #[tauri::command]
 pub fn run_standardization_batch(
-  window: Window,
+  window: WebviewWindow,
   state: tauri::State<JobRegistry>,
   request: StandardizeRequest
 ) -> Result<String, String> {

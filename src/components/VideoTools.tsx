@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { save } from "@tauri-apps/api/dialog";
+import { save } from "@tauri-apps/plugin-dialog";
 import presetsData from "../../presets.json";
 import FilePicker from "./FilePicker";
 

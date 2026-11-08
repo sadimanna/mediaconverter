@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { save } from "@tauri-apps/api/dialog";
+import { save } from "@tauri-apps/plugin-dialog";
 import FilePicker from "./FilePicker";
 import { inspectMedia, InspectorSummary, scanMediaFolder, writeTextFile } from "../api/ffmpeg";
 

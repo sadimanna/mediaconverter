@@ -7,6 +7,7 @@ use tauri::Manager;
 
 fn main() {
   tauri::Builder::default()
+    .plugin(tauri_plugin_dialog::init())
     .manage(ffmpeg::JobRegistry::default())
     .invoke_handler(tauri::generate_handler![
       ffmpeg::run_ffmpeg,
@@ -24,7 +25,7 @@ fn main() {
       ffmpeg::check_ffmpeg
     ])
     .setup(|app| {
-      if let Some(window) = app.get_window("main") {
+      if let Some(window) = app.get_webview_window("main") {
         ffmpeg::emit_ffmpeg_check(&window);
       }
       Ok(())
