@@ -8,9 +8,47 @@ use std::fs::{copy, create_dir_all, read_dir, File, OpenOptions};
 use std::io::{BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
 use std::process::{Child, ChildStderr, ChildStdout, Command, Stdio};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, OnceLock};
 use tauri::Window;
 use uuid::Uuid;
+
+/// Locate an executable. GUI apps launched from Finder/Dock get a minimal PATH
+/// (no Homebrew/MacPorts dirs), so fall back to common install locations.
+fn resolve_binary(name: &str) -> PathBuf {
+  let file_name = if cfg!(windows) { format!("{}.exe", name) } else { name.to_string() };
+
+  let mut dirs: Vec<PathBuf> = std::env::var_os("PATH")
+    .map(|p| std::env::split_paths(&p).collect())
+    .unwrap_or_default();
+  if cfg!(unix) {
+    for extra in [
+      "/opt/homebrew/bin",
+      "/usr/local/bin",
+      "/opt/local/bin",
+      "/usr/bin",
+      "/snap/bin",
+      "/home/linuxbrew/.linuxbrew/bin"
+    ] {
+      dirs.push(PathBuf::from(extra));
+    }
+  }
+
+  dirs
+    .into_iter()
+    .map(|dir| dir.join(&file_name))
+    .find(|candidate| candidate.is_file())
+    .unwrap_or_else(|| PathBuf::from(name))
+}
+
+fn ffmpeg_bin() -> &'static Path {
+  static BIN: OnceLock<PathBuf> = OnceLock::new();
+  BIN.get_or_init(|| resolve_binary("ffmpeg"))
+}
+
+fn ffprobe_bin() -> &'static Path {
+  static BIN: OnceLock<PathBuf> = OnceLock::new();
+  BIN.get_or_init(|| resolve_binary("ffprobe"))
+}
 
 #[derive(Clone, Default)]
 pub struct JobRegistry {
@@ -218,7 +256,7 @@ fn validate_video_target(codec: &str, container: &str) -> Result<(), String> {
 }
 
 fn check_ffmpeg_internal() -> Result<String, String> {
-  let output = Command::new("ffmpeg")
+  let output = Command::new(ffmpeg_bin())
     .arg("-version")
     .output()
     .map_err(|err| err.to_string())?;
@@ -262,7 +300,7 @@ fn find_first_input(args: &[String]) -> Option<String> {
 }
 
 fn probe_duration_ms(path: &str) -> Option<u64> {
-  let output = Command::new("ffprobe")
+  let output = Command::new(ffprobe_bin())
     .args([
       "-v",
       "error",
@@ -349,7 +387,7 @@ fn collect_media_in_dir(dir: &Path) -> Result<Vec<PathBuf>, String> {
 }
 
 fn probe_video_info(path: &str) -> Option<VideoInfo> {
-  let output = Command::new("ffprobe")
+  let output = Command::new(ffprobe_bin())
     .args([
       "-v",
       "error",
@@ -404,7 +442,7 @@ fn probe_media_entry(path: &Path) -> InspectorEntry {
   let path_string = path.to_string_lossy().to_string();
   let media_type = if is_supported_image(path) { "image" } else { "video" }.to_string();
 
-  let output = Command::new("ffprobe")
+  let output = Command::new(ffprobe_bin())
     .args([
       "-v",
       "error",
@@ -530,7 +568,7 @@ fn probe_media_entry(path: &Path) -> InspectorEntry {
 }
 
 fn probe_output_details(path: &str) -> (Option<String>, Option<f64>) {
-  let output = Command::new("ffprobe")
+  let output = Command::new(ffprobe_bin())
     .args([
       "-v",
       "error",
@@ -576,7 +614,7 @@ fn estimate_total_frames(path: &str) -> Option<u64> {
     }
   }
 
-  let output = Command::new("ffprobe")
+  let output = Command::new(ffprobe_bin())
     .args([
       "-v",
       "error",
@@ -794,7 +832,7 @@ fn spawn_ffmpeg(
   registry: Arc<Mutex<HashMap<String, Arc<Mutex<Child>>>>>,
   args: Vec<String>
 ) -> Result<(String, Arc<Mutex<Child>>, ChildStdout, ChildStderr), String> {
-  let mut child = Command::new("ffmpeg")
+  let mut child = Command::new(ffmpeg_bin())
     .args(&args)
     .stdout(Stdio::piped())
     .stderr(Stdio::piped())
@@ -1070,7 +1108,7 @@ pub fn write_text_file(path: String, contents: String) -> Result<(), String> {
 
 #[tauri::command]
 pub fn run_ffmpeg(args: Vec<String>) -> Result<String, String> {
-  let output = Command::new("ffmpeg")
+  let output = Command::new(ffmpeg_bin())
     .args(args)
     .output()
     .map_err(|err| err.to_string())?;
@@ -1324,7 +1362,7 @@ pub fn run_dataset_extraction(
       ];
 
       args = prepare_ffmpeg_args(args);
-      let mut child = match Command::new("ffmpeg")
+      let mut child = match Command::new(ffmpeg_bin())
         .args(&args)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -1650,7 +1688,7 @@ pub fn run_standardization_batch(
       }
 
       let args = prepare_ffmpeg_args(args);
-      let mut child = match Command::new("ffmpeg")
+      let mut child = match Command::new(ffmpeg_bin())
         .args(&args)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
