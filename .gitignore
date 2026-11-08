@@ -26,3 +26,9 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# macOS
+.DS_Store
+
+# Hallmark design-run notes and screenshots
+.hallmark/
