@@ -1,0 +1,4 @@
+# Pinned because newer stable Rust fails to compile wry 0.24 (Tauri v1) on Linux.
+[toolchain]
+channel = "1.93.1"
+profile = "minimal"

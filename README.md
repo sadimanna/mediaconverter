@@ -24,89 +24,113 @@ A production-ready desktop template that wraps FFmpeg with a modern GUI. Built w
 - Job queue with per-task progress, cancellation, and logs
 - Real-time FFmpeg progress via `-progress pipe:1`
 
-## Prerequisites
+## Download
 
-## System Requirements
+Prebuilt installers for macOS, Windows and Linux are attached to each [GitHub Release](https://github.com/sadimanna/mediaconverter/releases/latest). They are built by GitHub Actions from the tagged commit.
 
-- Node.js 20+ (LTS recommended)
-- Rust toolchain (stable, via `rustup`)
-- System FFmpeg available on PATH (`ffmpeg` and `ffprobe`)
-- OS: macOS, Windows, or Linux (desktop)
+You still need FFmpeg installed (see [Install FFmpeg](#install-ffmpeg)); the app does not bundle it.
 
-## Install Node.js (npm)
+## Build Requirements
+
+Tested versions, as pinned in `package-lock.json` and `src-tauri/Cargo.lock`:
+
+| Component | Version | Notes |
+| --- | --- | --- |
+| Node.js | 20 LTS or newer (CI uses 20; also tested on 22) | npm 10+ |
+| Rust | 1.93.1, pinned in `src-tauri/rust-toolchain.toml` | `rustup` installs it automatically on first build |
+| Tauri | 1.8 (Rust crate), CLI 1.6.3, API 1.6.0 | Tauri v1, not v2 |
+| React | 18.3 | |
+| Vite | 5.4 | |
+| TypeScript | 5.9 | |
+| Tailwind CSS | 3.4 | |
+| FFmpeg | any recent build with `ffmpeg` and `ffprobe` (tested on 8.0) | needed at runtime |
+
+`npm ci` and Cargo install exactly the locked versions, and rustup picks the pinned Rust, so a local build matches the release build. Newer Rust releases fail to compile the Tauri v1 Linux backend (`wry` 0.24), which is why Rust is pinned.
+
+Supported desktop systems: macOS 10.13+, Windows 10/11, and Linux with WebKitGTK 4.0 (Ubuntu 22.04 is what CI uses).
+
+## Install Build Tools
 
 ### macOS
 
 ```bash
+xcode-select --install
 brew install node
-node -v
-npm -v
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
 ### Windows (PowerShell)
+
+Install the [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with the "Desktop development with C++" workload. WebView2 ships with Windows 10 and 11.
 
 ```powershell
 winget install OpenJS.NodeJS.LTS
-node -v
-npm -v
+winget install Rustlang.Rustup
 ```
 
-### Linux (nvm)
+### Linux (Debian / Ubuntu)
 
 ```bash
+sudo apt-get update
+sudo apt-get install -y build-essential curl wget file libssl-dev \
+  libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-source "$NVM_DIR/nvm.sh"
+source ~/.nvm/nvm.sh
 nvm install 20
-nvm use 20
+```
+
+`libwebkit2gtk-4.0-dev` is not available on Ubuntu 24.04 and newer; build there in an Ubuntu 22.04 container or VM.
+
+Check the toolchain:
+
+```bash
 node -v
-npm -v
+rustc --version
 ```
 
-## Setup
+## Install FFmpeg
+
+`ffmpeg` and `ffprobe` must be installed. The app looks on your PATH first, then in `/opt/homebrew/bin`, `/usr/local/bin`, `/opt/local/bin`, `/usr/bin` and `/snap/bin`.
 
 ```bash
-npm install
+brew install ffmpeg              # macOS
+sudo apt-get install -y ffmpeg   # Debian / Ubuntu
 ```
-
-## Dev Mode
-
-```bash
-npx tauri dev
-```
-
-This launches the Vite dev server and the Tauri shell with live reload.
-
-## Run From Terminal
-
-### macOS (Terminal)
-
-```bash
-cd /path/to/MediaConverter
-npm install
-npx tauri dev
-```
-
-### Windows (PowerShell)
 
 ```powershell
-cd C:\path\to\MediaConverter
-npm install
-npx tauri dev
+winget install Gyan.FFmpeg       # Windows
 ```
 
-### Linux (Terminal)
+## Build and Run
+
+From the project folder:
 
 ```bash
-cd /path/to/MediaConverter
-npm install
+npm ci
+```
+
+Run in dev mode (Vite dev server plus the Tauri window, with live reload):
+
+```bash
 npx tauri dev
 ```
 
-Build native installers:
+Build native installers into `src-tauri/target/release/bundle/`:
 
 ```bash
 npx tauri build
+```
+
+The window colour (dark, blue, pink, green, chrome yellow or white) is chosen in the app under Settings.
+
+## Releasing
+
+Bump the version in `package.json`, `src-tauri/Cargo.toml` and `src-tauri/tauri.conf.json`, commit, then push a matching tag. The workflow builds all three platforms and publishes the release.
+
+```bash
+git tag v1.0.3
+git push origin v1.0.3
 ```
 
 ## Project Structure
@@ -126,8 +150,12 @@ MediaConverter/
 │  │  └─ FilePicker.tsx
 │  ├─ api/
 │  │  └─ ffmpeg.ts
+│  ├─ theme.ts             # window colour themes
 │  └─ styles/
-│     └─ index.css
+│     ├─ index.css
+│     ├─ tokens.css         # design tokens (colours, type, spacing)
+│     ├─ base.css
+│     └─ themes.css         # pastel and dark theme overrides
 ├─ src-tauri/               # Tauri Rust backend
 │  ├─ src/
 │  │  ├─ main.rs
